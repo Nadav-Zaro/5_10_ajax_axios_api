@@ -32,7 +32,7 @@
         //         if (this.readyState === 4 && this.status === 200) {
         //             let userInput = document.getElementById("num").value;
         //             let obj = JSON.parse(this.responseText);
-        //             let excgangeToEUR = userInput * obj.rates.ILS;
+        //             let excgangeToEUR = userInput / obj.rates.ILS;
         //             document.getElementById("p").innerText = `${excgangeToEUR} EUR`
         //         }
         //     };
@@ -50,7 +50,7 @@
                 .then(function (response) {
                     if (response.status === 200) {
                     let userInput = document.getElementById("num").value;
-                        let excgangeToEUR = userInput * response.data.rates.ILS;
+                        let excgangeToEUR = userInput / response.data.rates.ILS;
                         document.getElementById("p").innerText = `${excgangeToEUR} EUR`;
                         for (const key in response.data.rates) {
                             document.getElementById("exchange").innerHTML += `<option>${key}</option>`
