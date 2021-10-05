@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+    <!-- 1 -->
+    <!-- <label>Enter in ILS: </label>
+    <input type="number" id="num">
+    <button type="button" onclick="loadDoc()">exchange to EUR</button>
+    <script></script>
+    <p id="p"></p> -->
+
+    <!-- 2 -->
+    <label>Enter in ILS: </label>
+    <input type="number" id="num">
+    <select id="exchange">excgange to: </select>
+    <button type="button" onclick="loadDocApi()">exchange to EUR</button>
+    <p id="p"></p>
+
+    <script>
+        // --1--
+        // function loadDoc() {
+        //     const xhttp = new XMLHttpRequest();
+        //     xhttp.onreadystatechange = function () {
+        //         if (this.readyState === 4 && this.status === 200) {
+        //             let userInput = document.getElementById("num").value;
+        //             let obj = JSON.parse(this.responseText);
+        //             let excgangeToEUR = userInput * obj.rates.ILS;
+        //             document.getElementById("p").innerText = `${excgangeToEUR} EUR`
+        //         }
+        //     };
+        //     const API_key = "6c886ed1f6f5027eca4c03437a961f5b";
+        //     const url = `http://api.exchangeratesapi.io/v1/latest?access_key=${API_key}`;
+        //     xhttp.open("GET" , url );
+        //     xhttp.send();
+        // }
+
+        // --2--
+        const API_key = "6c886ed1f6f5027eca4c03437a961f5b"
+        const url = `http://api.exchangeratesapi.io/v1/latest?access_key=${API_key}`
+        function loadDocApi() {
+            axios.get(url)
+                .then(function (response) {
+                    if (response.status === 200) {
+                    let userInput = document.getElementById("num").value;
+                        let excgangeToEUR = userInput * response.data.rates.ILS;
+                        document.getElementById("p").innerText = `${excgangeToEUR} EUR`;
+                        for (const key in response.data.rates) {
+                            document.getElementById("exchange").innerHTML += `<option>${key}</option>`
+                        }
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+        }
+        loadDocApi()
+    </script>
+</body>
+
+</html>
