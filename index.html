@@ -20,8 +20,8 @@
     <!-- 2 -->
     <label>Enter in ILS: </label>
     <input type="number" id="num">
-    <select id="exchange">excgange to: </select>
-    <button type="button" onclick="loadDocApi()">exchange to EUR</button>
+    <select id="exchange"></select>
+    <button type="button" id="btn" onclick="loadDocApi()">exchange to EUR</button>
     <p id="p"></p>
 
     <script>
@@ -43,25 +43,31 @@
         // }
 
         // --2--
+        let userInput, btn, excgangeTo, options, copyRes;
+        btn = document.getElementById("btn");
+        options = document.getElementById("exchange");
         const API_key = "6c886ed1f6f5027eca4c03437a961f5b"
         const url = `http://api.exchangeratesapi.io/v1/latest?access_key=${API_key}`
-        function loadDocApi() {
-            axios.get(url)
-                .then(function (response) {
-                    if (response.status === 200) {
-                    let userInput = document.getElementById("num").value;
-                        let excgangeToEUR = userInput / response.data.rates.ILS;
-                        document.getElementById("p").innerText = `${excgangeToEUR} EUR`;
-                        for (const key in response.data.rates) {
-                            document.getElementById("exchange").innerHTML += `<option>${key}</option>`
-                        }
+        axios.get(url)
+            .then(function (response) {
+                if (response.status === 200) {
+                    console.log(response.data);
+                    copyRes = response;
+                    for (const key in response.data.rates) {
+                        options.innerHTML += `<option>${key}</option>`;
                     }
-                })
-                .catch(function (error) {
-                    console.log(error);
-                })
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+
+        function loadDocApi() {
+            userInput = document.getElementById("num").value;
+            excgangeTo = (userInput / copyRes.data.rates.ILS) * copyRes.data.rates[options.value];
+            document.getElementById("p").innerText = `${excgangeTo} ${options.value}`;
         }
-        loadDocApi()
+
     </script>
 </body>
 
